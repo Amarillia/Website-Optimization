@@ -376,6 +376,25 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
   console.log("Average scripting time to generate last 10 frames: " + sum / 10 + "ms");
 }
 
+// implemented requestAnimationFrame as seen on http://www.html5rocks.com/en/tutorials/speed/animations/
+// declare variable for known scroll position
+var latestKnownScrollY = 0,
+ticking = false;
+
+// Callback for scroll event
+function onScroll() {
+  latestKnownScrollY = window.scrollY;
+  requestTick();
+}
+
+// calls requestAnimationFrame
+function requestTick() {
+  if(!ticking) {
+    window.requestAnimationFrame(updatePositions);
+  }
+  ticking = true;
+}
+
 // The following code for sliding background pizzas was pulled from Ilya's demo found at:
 // https://www.igvita.com/slides/2012/devtools-tips-and-tricks/jank-demo.html
 
@@ -383,14 +402,14 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 function updatePositions() {
   window.frame++;
   window.performance.mark("mark_start_frame");
-  var scrollTopY = (document.body.scrollTop / 1250);
+  var scrollTopY = latestKnownScrollY / 1250;
   var scrollPos = [];
   
   for(var i = 0; i < 5; i++){
       scrollPos.push(Math.sin(scrollTopY + i));
   }
 var phase;
-  for (i = 0; i < window.items.length; i++) {
+  for (i = 0; i < items.length; i++) {
     phase = scrollPos[i % 5];
     window.items[i].style.transform = 'translateX(' + (100 * phase) + 'px)';
   }
@@ -403,13 +422,15 @@ var phase;
     var timesToUpdatePosition = window.performance.getEntriesByName("measure_frame_duration");
     logAverageFrame(timesToUpdatePosition);
   }
+     window.ticking = false;
+
 }
 
-// runs updatePositions on scroll
-window.addEventListener('scroll', updatePositions);
+// runs requestAnimationFrame(updatePositions) on scroll
+window.addEventListener('scroll', onScroll, false);
 
 // Generates the sliding pizzas when the page loads.
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', window.requestAnimationFrame(function() {
   var elem;
   var cols = 8;
   var s = 256;
@@ -429,5 +450,5 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   //Moved out from updatePositions to avoid re-defining items on every scroll event
   window.items = document.getElementsByClassName('mover');
-  updatePositions();
-});
+  window.requestAnimationFrame(updatePositions);
+}));
