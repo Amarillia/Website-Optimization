@@ -5,6 +5,7 @@ Getting Started: Download the contents as a zip file and run it in your local br
 Page load speed optimization
 
 The images were rescaled and optimized to the final layout dimensions.
+The images converted to .webp format.
 
 For the critical above-the-fold content styles, I inlined them and applied them to the bottom of the document.
 Below I've included the site to where I found the Google Developer suggested method.
