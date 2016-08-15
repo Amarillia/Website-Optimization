@@ -289,13 +289,13 @@ var resizePizzas = function(size) {
   function changeSliderLabel(size) {
     switch(size) {
       case "1":
-        document.querySelector("#pizzaSize").innerHTML = "Small";
+        document.getElementById("pizzaSize").innerHTML = "Small";
         return;
       case "2":
-        document.querySelector("#pizzaSize").innerHTML = "Medium";
+        document.getElementById("pizzaSize").innerHTML = "Medium";
         return;
       case "3":
-        document.querySelector("#pizzaSize").innerHTML = "Large";
+        document.getElementById("pizzaSize").innerHTML = "Large";
         return;
       default:
         console.log("bug in changeSliderLabel");
@@ -307,7 +307,7 @@ var resizePizzas = function(size) {
    // Returns the size difference to change a pizza element from one size to another. Called by changePizzaSlices(size).
   function determineDx (elem, size) {
     var oldWidth = elem.offsetWidth;
-    var windowWidth = document.querySelector("#randomPizzas").offsetWidth;
+    var windowWidth = document.getElementById("randomPizzas").offsetWidth;
     var oldSize = oldWidth / windowWidth;
 
     // Changes the slider value to a percent width
@@ -317,10 +317,10 @@ var resizePizzas = function(size) {
             newWidth = 25;
             break;
         case "2":
-            newWidth = 25;
+            newWidth = 33.33;
             break;
         case "3":
-            newWidth = 25;
+            newWidth = 50;
             break;
         default:
           console.log("bug in sizeSwitcher");
@@ -336,14 +336,11 @@ var resizePizzas = function(size) {
   // Iterates through pizza elements on the page and changes their widths
   
   function changePizzaSizes(size) {
-    var dx;
-    var newWidth;
     var randPizzCont = document.getElementsByClassName("randomPizzaContainer");
+    var dx = determineDx(randPizzCont[i], size);
+    var newWidth = (randPizzCont[i].offsetWidth + dx) + 'px';
 
     for (i = 0; i < randPizzCont.length; i++) {
-
-      //dx = determineDx(randPizzCont[i], size);
-      //newWidth = (randPizzCont[i].offsetWidth + dx) + 'px';
       randPizzCont[i].style.width = newWidth + "%";
     }
   }
