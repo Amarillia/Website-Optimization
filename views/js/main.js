@@ -302,7 +302,7 @@ var resizePizzas = function(size) {
     }
   }
 
-  changeSliderLabel(size);
+ changeSliderLabel(size);
 
    // Returns the size difference to change a pizza element from one size to another. Called by changePizzaSlices(size).
   function determineDx (elem, size) {
@@ -314,16 +314,14 @@ var resizePizzas = function(size) {
     function sizeSwitcher (size) {
       switch(size) {
         case "1":
-            newWidth = 25;
-            break;
+          return 0.25;
         case "2":
-            newWidth = 33.33;
-            break;
+          return 0.3333;
         case "3":
-            newWidth = 50;
-            break;
+          return 0.5;
         default:
           console.log("bug in sizeSwitcher");
+      
       }
     }
 
@@ -336,9 +334,22 @@ var resizePizzas = function(size) {
   // Iterates through pizza elements on the page and changes their widths
   
   function changePizzaSizes(size) {
+    switch(size) {
+        case "1":
+            newWidth = 25;
+            break;
+        case "2":
+            newWidth = 33.33;
+            break;
+        case "3":
+            newWidth = 50;
+            break;
+        default:
+          console.log("bug in sizeSwitcher");
+      }
     var randPizzCont = document.getElementsByClassName("randomPizzaContainer");
-    var dx = determineDx(randPizzCont[i], size);
-    var newWidth = (randPizzCont[i].offsetWidth + dx) + 'px';
+    //var dx = determineDx(randPizzCont[i], size);
+    //var newWidth = (randPizzCont[i].offsetWidth + dx) + 'px';
 
     for (i = 0; i < randPizzCont.length; i++) {
       randPizzCont[i].style.width = newWidth + "%";
